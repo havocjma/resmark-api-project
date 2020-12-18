@@ -1,0 +1,21 @@
+#jwtContainer {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#jwtToken {
+    width: 100%;
+    word-wrap: break-word;
+
+}
+
+#productsList {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.productName {
+    width: 100%;
+    word-wrap: break-word;
+
+}
