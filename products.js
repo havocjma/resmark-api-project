@@ -30,7 +30,6 @@ function getProducts(token) {
 
     //RETURNING THE TOKEN TO THE CALLING FUNCTION
     return(productNames);
-    //return(products.responseText);
 }
 
 const productNameArray = getProducts(token);
