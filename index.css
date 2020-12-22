@@ -1,6 +1,16 @@
-#jwtContainer {
-    width: 80%;
+.section {
+    width: 90%;
     margin: 0 auto;
+}
+
+.sectionHeader {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.description {
+    text-align: center;
+    margin: -8px;
 }
 
 #jwtToken {

@@ -20,21 +20,43 @@
             <h3>Resmark API Demonstration</h3>
         </div>
         <div id="body">
-            <div id="displayToken">
-                <button id="getJwt">Get a JWT Token</button>
-                <div id="jwtContainer">
+
+            <!-- Token -->
+            <div class="section">
+                <h3 class="sectionHeader">Get a JWT Token</h3>
+                <p class="description">When using the Resmark API the first things you will need to do is authenticate your user by obtaining a JWT Token.</p>
+                <form id="user" name="userForm">
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username"><br>
+                    <label for="key">API Key:</label><br>
+                    <input type="text" id="key" name="key"><br><br>
+                    <input type="submit" value="Get Token" id="submitToken" onclick="returnToken(username.value, key.value); return false">
+                </form>
+                <div id="result">
                     <p id="jwtToken"></p>
                 </div>
+                <div class="codeContainer">
+                    <button id="showCode">Display Code</button>
+                </div>
             </div>
-            <div id="displayProducts">
-                <button id="getProducts">Get list of products by name</button>
+
+            <!-- Products -->
+            <div class="section">
+                <button id="getProducts">Show Products</button>
                 <div id="productsList"></div>
             </div>
-            <div id="createCart"></div>
-            <div id="addCustomer"></div>
+
+            <!-- Select Product and Show Times Available for date entered -->
+            <div class="section"></div>
+
+            <!-- Select Time, number of participants and Collect the customer information -->
+            <div class="section"></div>
+
+            <!-- Create the order -->
+            <div class="section"></div>
         </div>
         
-        <script type="module" src="token.js"></script>
-        <script type="module" src="products.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+        <script type="text/javascript" src="showCode.js"></script>
     </body>
 </html>
