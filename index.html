@@ -30,14 +30,14 @@
                      passing in a username and the API Key of your business, which can be found in your API settings.
                 </p>   
                 <div class="container">
-                    <form id="userDetails" name="userForm">
+                    <form id="userDetails" class="contentBox" name="userForm">
                         <label for="username">Username</label><br><br>
                         <input type="text" id="username" name="username"><br><br>
                         <label for="key">API Key</label><br><br>
                         <input type="text" id="key" name="key"><br><br>
                         <input type="submit" value="Get Token" class="button" id="submitToken" onclick="returnToken(username.value, key.value); return false">
                     </form>
-                    <div id="result">
+                    <div id="result" class="contentBox">
                         <p id="tokenHeader">Your JWT Token</h5>
                         <p id="jwtToken"></p>
                     </div>
@@ -47,24 +47,25 @@
                         Show API Call
                         <i id="jwtArrow" class="arrow down"></i>
                     </button>
-                    <div id="tokenCode">
+                    <div class="codeSection" id="tokenCode">
                             <pre>
                               <code>
                                 function getToken(username, key) {
     
-                                    //THE INFORMATION WE WILL PASS TO THE API IN THE BODY
+                                    //CREATING THE API BODY USING THE USERNAME AND API KEY THAT WAS COLLECTED ABOVE
                                     const body = {
                                         username: username,
                                         apikey: key
                                     };
                                     const json = JSON.stringify(body);
                                     
-                                    //MAKING THE REQUEST, SETTING THE HEADER AND SENDING THE BODY OF THE REQUEST
+                                    //MAKING THE API REQUEST, SETTING THE HEADER TYPE AND SENDING THE BODY OF THE REQUEST
                                     const jwtToken = new XMLHttpRequest();
                                     jwtToken.open("POST", "https://app.resmarksystems.com/public/api/authenticate",false);
                                     jwtToken.setRequestHeader('Content-type','application/json; charset=utf-8');
                                     jwtToken.send(json);
                                     
+                                    //CREATING THE VARIABLE WHICH HOLDS THE API'S RESPONSE TEXT (THE TOKEN)
                                     token = jwtToken.responseText;
                                 
                                     //RETURNING THE TOKEN TO THE CALLING FUNCTION
@@ -79,21 +80,43 @@
             <!-- Display each product with there name, descripition and image. (each product is a link when  clicked it populates the next section) -->
             <div class="section">
                 <h3 class="sectionHeader">Show a List of Products</h3>
-                <p class="description">This is a description</p>
-                <div class="container">
-                    <button id="showProducts">Show Products</button>
-                    <div id="productContainer"></div>
-                </div>
+                <p class="description">
+                     After obtaining your authorization token you can then start to interact with the other API endpoints. In the following example, we will
+                     pass the JWT Token obtained above to get a list of all the products in our business, along with some select meta data about each of those products. 
+                     Once we have that information we can then format and display those products to the customer. Click 'Show My Products' below to invoke 
+                     the Product endpoint of the API and then select a product from the list.
+                </p>
+                <button id="showProducts" class="button getCodeButton">Show My Products</button>
+                <div class="container contentBox" id="productsContainer"></div>
 
                 <div class="container">
                     <button class="button getCodeButton" id="getProductsCode">
                         Show API Call
                         <i id="productsArrow" class="arrow down"></i>
                     </button>
-                    <div id="productsCode">
+                    <div class="codeSection" id="productsCode">
                             <pre>
                               <code>
+                                function getProducts(token) {
+    
+                                    //MAKING THE REQUEST, SETTING THE HEADERS AND SENDING THE BODY OF THE REQUEST
+                                    const products = new XMLHttpRequest();
+                                    products.open("GET", "https://app.resmarksystems.com/public/api/product",false);
+                                    products.setRequestHeader('Content-type','application/json; charset=utf-8');
+                                    
+                                    //USES THE TOKEN OBTAINED ABOVE FOR ACCESS
+                                    products.setRequestHeader('Authorization',`Bearer ${token}`); 
+                                    products.send();
                                 
+                                    //PARSING THE RESPONSE TEXT TO TURN IT INTO JSON FROM A STRING
+                                    const parsedResponse = JSON.parse(products.responseText);
+                                
+                                    //ISOLATING THE 'DATA' ARRAY WHICH CONTAINS THE PRODUCTS AND ALL OF THEIR META DATA
+                                    const productArray = parsedResponse.data;
+                                
+                                    //RETURN THE PRODUCT ARRAY TO THE CALLING FUNCTION
+                                    return(productArray);
+                                }
                               </code>
                             </pre>
                     </div>
@@ -101,16 +124,20 @@
             </div>
 
             <!-- Show selected Product and input fields for the date and participants. when entered Show Times Available for date entered when time selected go to next section-->
-            <div class="section">
-                <h3 class="sectionHeader">Date Selection for the Selected Product</h3>
+            <div class="section" id="selectDateSection">
+                <h3 class="sectionHeader">Select a Date and Add Participants</h3>
                 <p class="description">This is a description</p>
+
+                <div class="container contentBox" id="selectedProduct">
+
+                </div>
 
                 <div class="container">
                     <button class="button getCodeButton" id="getDateAndPartCode">
                         Show API Call
                         <i id="dateAndPartArrow" class="arrow down"></i>
                     </button>
-                    <div id="dateAndPartCode">
+                    <div class="codeSection" id="dateAndPartCode">
                             <pre>
                               <code>
                                 
@@ -130,7 +157,7 @@
                         Show API Call
                         <i id="customerArrow" class="arrow down"></i>
                     </button>
-                    <div id="customerCode">
+                    <div class="codeSection" id="customerCode">
                             <pre>
                               <code>
                                 
@@ -150,7 +177,7 @@
                         Show API Call
                         <i id="orderArrow" class="arrow down"></i>
                     </button>
-                    <div id="orderCode">
+                    <div class="codeSection" id="orderCode">
                             <pre>
                               <code>
                                 

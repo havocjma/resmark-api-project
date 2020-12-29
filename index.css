@@ -2,27 +2,23 @@
 body {
     background-color: rgb(55, 84, 182);
 }
-
 #body {
     width: 94%;
     margin: 0 auto; 
 }
-
 #pageHeader {
     text-align: center;
     color: white;
 }
-
 .section {
     width: 100%;
     margin: 0 auto;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border-radius: 7px;
     padding-top: 10px;
     padding-bottom: 10px;
     background-color: white;
 }
-
 .clearfix {
     overflow: auto;
   }
@@ -31,30 +27,15 @@ body {
     text-align: center;
     text-decoration: underline;
 }
-
 .description {
     text-align: justify;
     width: 94%;
     margin: 0 auto;
 }
-
-#jwtToken {
-    width: 100%;
-    word-wrap: break-word;
-}
-
 .container {
     width: 94%;
     margin: 0 auto;
 }
-
-#getCode {
-    display: block;
-    margin: 0 auto;
-    margin-top: 15px; 
-    margin-bottom: 15px;
-}
-
 #apiCall {
     border: 1px solid black;
     border-radius: 5px;
@@ -62,62 +43,45 @@ body {
     color: white;
     display: none;
 }
-
 .arrow {
     border: solid white;
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 3px;
     margin-left: 5px
-  }
-  
+  }  
 .up {
     transform: rotate(-135deg);
     -webkit-transform: rotate(-135deg);
-}
-  
+} 
 .down {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
-/* ============ JWT TOKEN STYLES ============== */
 
-#userDetails {
-    width: 20%;
-    border: 1px solid black;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    padding-top: 20px;
-    height: 220px;
-    display: inline-block;
-    vertical-align: middle;
+.codeSection {
+    background-color: black;
+    border-radius: 5px;
+    color: white;
 }
-
-#tokenHeader {
-    text-align: center;
-    text-decoration: underline;
-    margin-top: 10px;
-    margin-bottom: 10px;
+#productsCode { 
+    display: none;
 }
-
-#result {
-    width: 70%;
-    border: 1px solid black;
-    Padding: 10px;
-    overflow: scroll;
-    height: 220px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 7%;
-    display: inline-block;
-    vertical-align: middle;
+#dateAndPartCode { 
+    display: none;
 }
-
-#submitToken {
-    margin-bottom: 20px;
+#customerCode { 
+    display: none;
 }
-
+#orderCode { 
+    display: none;
+}
+.getCodeButton {
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px; 
+    margin-bottom: 15px;
+}
 .button {
     padding: 10px 15px;
     font-size: 14px;
@@ -126,66 +90,128 @@ body {
     text-decoration: none;
     outline: none;
     color: #fff;
-    background-color: #166faa;
+    background-color: #467cbd;
     border: none;
     border-radius: 15px;
     box-shadow: 0 4px #999;
 }
-
 .button:hover {
-    background-color: #094eb6
+    background-color: #0a66a3;
 }
 
 .button:active {
-    background-color: #2e6386;
-    box-shadow: 0 2px #666;
+    background-color: #467cbd;
+    box-shadow: 0 2px #999;
     transform: translateY(2px);
 }
-
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 10px;
   }
-  
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
     box-shadow: 0 0 1px rgba(255,255,255,.5);
   }
+.contentBox {
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 5px;
+    background-color: rgb(230 243 253);
+}
+/* ============ JWT TOKEN STYLES ============== */
+#userDetails {
+    width: 20%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+    padding-top: 20px;
+    height: 220px;
+    display: inline-block;
+    vertical-align: middle;
+}
+#username {
+    width: 70%;
+}
+#key {
+    width: 70%;
+}
+#submitToken {
+    margin-bottom: 20px;
+}
+#result {
+    width: 73%;
+    padding: 10px;
+    overflow: auto;
+    height: 220px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    margin-left: 4%;
+    display: inline-block;
+    vertical-align: middle;
+}
+#jwtToken {
+    width: 100%;
+    word-wrap: break-word;
+}
+#tokenHeader {
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#tokenCode { 
+    display: none;
+}
 
 /* ============ SHOW PRODUCTS ============== */
-
-#productContainer {
-    width: 80%;
-    margin: 0 auto;
+#productsContainer {
+    min-height: 200px;
+    padding-bottom: 20px;
 }
-
 .product {
-    border: 1px solid black;
-    margin: 1%;
-    width:  17.5%;
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 5px;
+    background-color: white;
+    margin: 20px 0 0 2.25%;
+    width:  19%;
+    height: 300px;
     display: inline-block;
     text-align: center;
+    padding: 10px 20px;
+    vertical-align: middle;
 }
 
+.product:hover {
+    cursor: alias;
+}
 .productName {
     margin: 0 auto;
     text-align: center;
     margin-top: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #403333;
+    font-size: 1.1em;
 }
-
 .productImg {
     margin: 0 auto;
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
     width: 80%;
+    height: 150px;
 }
-
 .overview  {
     margin: 0 auto;
     text-align: left;
     margin-top: 5px;
+    width: 80%;
+}
+
+/* ============ SHOW PRODUCTS ============== */
+#selectedProduct {
+    min-height: 200px;
+    padding-bottom: 20px;
 }
