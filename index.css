@@ -1,7 +1,31 @@
-.section {
-    width: 90%;
-    margin: 0 auto;
+/* ================= PAGE RULES ================== */
+body {
+    background-color: rgb(55, 84, 182);
 }
+
+#body {
+    width: 94%;
+    margin: 0 auto; 
+}
+
+#pageHeader {
+    text-align: center;
+    color: white;
+}
+
+.section {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+.clearfix {
+    overflow: auto;
+  }
 
 .sectionHeader {
     text-align: center;
@@ -9,23 +33,159 @@
 }
 
 .description {
-    text-align: center;
-    margin: -8px;
+    text-align: justify;
+    width: 94%;
+    margin: 0 auto;
 }
 
 #jwtToken {
     width: 100%;
     word-wrap: break-word;
-
 }
 
-#productsList {
+.container {
+    width: 94%;
+    margin: 0 auto;
+}
+
+#getCode {
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px; 
+    margin-bottom: 15px;
+}
+
+#apiCall {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    display: none;
+}
+
+.arrow {
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    margin-left: 5px
+  }
+  
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+  
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+/* ============ JWT TOKEN STYLES ============== */
+
+#userDetails {
+    width: 20%;
+    border: 1px solid black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding-top: 20px;
+    height: 220px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#tokenHeader {
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#result {
+    width: 70%;
+    border: 1px solid black;
+    Padding: 10px;
+    overflow: scroll;
+    height: 220px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 7%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#submitToken {
+    margin-bottom: 20px;
+}
+
+.button {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #166faa;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px #999;
+}
+
+.button:hover {
+    background-color: #094eb6
+}
+
+.button:active {
+    background-color: #2e6386;
+    box-shadow: 0 2px #666;
+    transform: translateY(2px);
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+  }
+  
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    box-shadow: 0 0 1px rgba(255,255,255,.5);
+  }
+
+/* ============ SHOW PRODUCTS ============== */
+
+#productContainer {
     width: 80%;
     margin: 0 auto;
 }
 
-.productName {
-    width: 100%;
-    word-wrap: break-word;
+.product {
+    border: 1px solid black;
+    margin: 1%;
+    width:  17.5%;
+    display: inline-block;
+    text-align: center;
+}
 
+.productName {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.productImg {
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 80%;
+}
+
+.overview  {
+    margin: 0 auto;
+    text-align: left;
+    margin-top: 5px;
 }

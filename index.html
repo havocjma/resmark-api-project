@@ -17,43 +17,148 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div id="header">
-            <h3>Resmark API Demonstration</h3>
+            <h1 id="pageHeader">Resmark API Demonstration</h1>
         </div>
         <div id="body">
-
             <!-- Token -->
             <div class="section">
                 <h3 class="sectionHeader">Get a JWT Token</h3>
-                <p class="description">When using the Resmark API the first things you will need to do is authenticate your user by obtaining a JWT Token.</p>
-                <form id="user" name="userForm">
-                    <label for="username">Username:</label><br>
-                    <input type="text" id="username" name="username"><br>
-                    <label for="key">API Key:</label><br>
-                    <input type="text" id="key" name="key"><br><br>
-                    <input type="submit" value="Get Token" id="submitToken" onclick="returnToken(username.value, key.value); return false">
-                </form>
-                <div id="result">
-                    <p id="jwtToken"></p>
+                <p class="description">
+                     When using the Resmark API you will first need to authenticate your user by obtaining a JWT Token. 
+                     This token will be used in every call made to the API to ensure the security of the information 
+                     being retrieved. To get this token please invoke the authentication endpoint of the Resmark API while 
+                     passing in a username and the API Key of your business, which can be found in your API settings.
+                </p>   
+                <div class="container">
+                    <form id="userDetails" name="userForm">
+                        <label for="username">Username</label><br><br>
+                        <input type="text" id="username" name="username"><br><br>
+                        <label for="key">API Key</label><br><br>
+                        <input type="text" id="key" name="key"><br><br>
+                        <input type="submit" value="Get Token" class="button" id="submitToken" onclick="returnToken(username.value, key.value); return false">
+                    </form>
+                    <div id="result">
+                        <p id="tokenHeader">Your JWT Token</h5>
+                        <p id="jwtToken"></p>
+                    </div>
                 </div>
-                <div class="codeContainer">
-                    <button id="showCode">Display Code</button>
+                <div class="container">
+                    <button class="button getCodeButton" id="getTokenCode">
+                        Show API Call
+                        <i id="jwtArrow" class="arrow down"></i>
+                    </button>
+                    <div id="tokenCode">
+                            <pre>
+                              <code>
+                                function getToken(username, key) {
+    
+                                    //THE INFORMATION WE WILL PASS TO THE API IN THE BODY
+                                    const body = {
+                                        username: username,
+                                        apikey: key
+                                    };
+                                    const json = JSON.stringify(body);
+                                    
+                                    //MAKING THE REQUEST, SETTING THE HEADER AND SENDING THE BODY OF THE REQUEST
+                                    const jwtToken = new XMLHttpRequest();
+                                    jwtToken.open("POST", "https://app.resmarksystems.com/public/api/authenticate",false);
+                                    jwtToken.setRequestHeader('Content-type','application/json; charset=utf-8');
+                                    jwtToken.send(json);
+                                    
+                                    token = jwtToken.responseText;
+                                
+                                    //RETURNING THE TOKEN TO THE CALLING FUNCTION
+                                    return(jwtToken.responseText);
+                                }
+                              </code>
+                            </pre>
+                    </div>
                 </div>
             </div>
 
-            <!-- Products -->
+            <!-- Display each product with there name, descripition and image. (each product is a link when  clicked it populates the next section) -->
             <div class="section">
-                <button id="getProducts">Show Products</button>
-                <div id="productsList"></div>
+                <h3 class="sectionHeader">Show a List of Products</h3>
+                <p class="description">This is a description</p>
+                <div class="container">
+                    <button id="showProducts">Show Products</button>
+                    <div id="productContainer"></div>
+                </div>
+
+                <div class="container">
+                    <button class="button getCodeButton" id="getProductsCode">
+                        Show API Call
+                        <i id="productsArrow" class="arrow down"></i>
+                    </button>
+                    <div id="productsCode">
+                            <pre>
+                              <code>
+                                
+                              </code>
+                            </pre>
+                    </div>
+                </div>
             </div>
 
-            <!-- Select Product and Show Times Available for date entered -->
-            <div class="section"></div>
+            <!-- Show selected Product and input fields for the date and participants. when entered Show Times Available for date entered when time selected go to next section-->
+            <div class="section">
+                <h3 class="sectionHeader">Date Selection for the Selected Product</h3>
+                <p class="description">This is a description</p>
 
-            <!-- Select Time, number of participants and Collect the customer information -->
-            <div class="section"></div>
+                <div class="container">
+                    <button class="button getCodeButton" id="getDateAndPartCode">
+                        Show API Call
+                        <i id="dateAndPartArrow" class="arrow down"></i>
+                    </button>
+                    <div id="dateAndPartCode">
+                            <pre>
+                              <code>
+                                
+                              </code>
+                            </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collect the customers information -->
+            <div class="section">
+                <h3 class="sectionHeader">Collect the Customers Information</h3>
+                <p class="description">This is a description</p>
+
+                <div class="container">
+                    <button class="button getCodeButton" id="getCustomerCode">
+                        Show API Call
+                        <i id="customerArrow" class="arrow down"></i>
+                    </button>
+                    <div id="customerCode">
+                            <pre>
+                              <code>
+                                
+                              </code>
+                            </pre>
+                    </div>
+                </div>
+            </div>
 
             <!-- Create the order -->
-            <div class="section"></div>
+            <div class="section">
+                <h3 class="sectionHeader">Create and then Display the Order</h3>
+                <p class="description">This is a description</p>
+                
+                <div class="container">
+                    <button class="button getCodeButton" id="getOrderCode">
+                        Show API Call
+                        <i id="orderArrow" class="arrow down"></i>
+                    </button>
+                    <div id="orderCode">
+                            <pre>
+                              <code>
+                                
+                              </code>
+                            </pre>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <script type="text/javascript" src="index.js"></script>
