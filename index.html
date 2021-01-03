@@ -32,9 +32,9 @@
                 <div class="container">
                     <form id="userDetails" class="contentBox" name="userForm">
                         <label for="username">Username</label><br><br>
-                        <input type="text" id="username" name="username"><br><br>
+                        <input type="text" id="username" name="username" required><br><br>
                         <label for="key">API Key</label><br><br>
-                        <input type="text" id="key" name="key"><br><br>
+                        <input type="text" id="key" name="key" required><br><br>
                         <input type="submit" value="Get Token" class="button" id="submitToken" onclick="returnToken(username.value, key.value); return false">
                     </form>
                     <div id="result" class="contentBox">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="container">
                     <button class="button getCodeButton" id="getTokenCode">
-                        Show API Call
+                        Show Authentication API Call
                         <i id="jwtArrow" class="arrow down"></i>
                     </button>
                     <div class="codeSection" id="tokenCode">
@@ -91,7 +91,7 @@
 
                 <div class="container">
                     <button class="button getCodeButton" id="getProductsCode">
-                        Show API Call
+                        Show Products API Call
                         <i id="productsArrow" class="arrow down"></i>
                     </button>
                     <div class="codeSection" id="productsCode">
@@ -128,22 +128,104 @@
                 <h3 class="sectionHeader">Select a Date and Add Participants</h3>
                 <p class="description">This is a description</p>
 
-                <div class="container contentBox" id="selectedProduct">
-
-                </div>
+                <div class="container contentBox" id="selectedProduct"></div>
 
                 <div class="container">
-                    <button class="button getCodeButton" id="getDateAndPartCode">
-                        Show API Call
-                        <i id="dateAndPartArrow" class="arrow down"></i>
+                    <button class="button doubleButton" id="getDatesCode">
+                        Show Product Items API Call (Availability)
+                        <i id="datesArrow" class="arrow down"></i>
                     </button>
-                    <div class="codeSection" id="dateAndPartCode">
-                            <pre>
-                              <code>
-                                
-                              </code>
-                            </pre>
+                    <button class="button doubleButton" id="getCreateCartCode">
+                        Show Create Cart API Call
+                        <i id="cartArrow" class="arrow down"></i>
+                    </button>
+                    <div class="codeSection" id="datesCode">
+                        <pre>
+                            <code>
+                                //FUNCTION THAT CONTAINS THE API CALL TO GET AVAILABLE TIMES FOR THE SELECTED PRODUCT
+                                function getAvailalbility (from, to) {
+                                    apiMonth = from.substring(0,7);
+
+                                    //MAKING THE REQUEST, SETTING THE HEADERS AND SENDING THE BODY OF THE REQUEST
+                                    const productItems = new XMLHttpRequest();
+                                    productItems.open("GET", `https://app.resmarksystems.com/public/api/product/${selectedProductNumber}/item?from=${apiMonth}&to=${apiMonth}`,false);
+                                    productItems.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+                                    //USES THE TOKEN OBTAINED ABOVE FOR ACCESS
+                                    productItems.setRequestHeader('Authorization',`Bearer ${token}`); 
+                                    productItems.send();
+
+                                    //PARSING THE RESPONSE TEXT TO TURN IT INTO JSON FROM A STRING
+                                    const parsedResponse = JSON.parse(productItems.responseText);
+
+                                    //ISOLATING THE ITEMS ARRAY
+                                    const itemsArray = parsedResponse.data.items;
+
+                                    //DEFINE THE OBJECT THAT WILL STORE THE PRODUCT DATA
+                                    let newStartTimeArray = [];
+
+                                    //VARIABLES TO HOLD THE FROM AND TO DAY THAT THE CUSTOMER REQUESTED
+                                    fromDay = from.substring(8,10);
+                                    toDay = to.substring(8,10);
+
+                                    //LOOPS THROUGH THE ITEMS ARRAY TO CREATE THE DATA WE NEED AND THEN PUSH IT TO THE NEWSTARTTIMEARRAY CREATED ABOVE
+                                    for (let x=0; x&lt;itemsArray.length; x++) {
+                                        
+                                        //GETTING THE DAY FROM THE ITEMS DATE TO USE IN A COMPARISON BELOW
+                                        let itemDate = itemsArray[x].date.substring(8,10);
+                                        
+                                        //IF THE DATE OF THE ITEM IS BETWEEN THE START AND END DATE THEN ADD IT TO THE ARRAY
+                                        if ( itemDate >= fromDay && itemDate &lt;= toDay) {
+
+                                            //VARIABLE TO HOLD THE AVAILABILITY OBJECT SINCE THE KEY IS A NONVIABLE CHARACTER '*'
+                                            let  availabilityObj = itemsArray[x].timesAvailable[0].tiersAvailable;
+                                            
+                                            //CREATE AN OBJECT THAT HAS ALL THE INFORMATION FOR THE PRODUCT
+                                            let startTimeObject = {
+                                                day: parseInt(itemDate),
+                                                date: itemsArray[x].date,
+                                                startTime: dateFormat(itemsArray[x].timesAvailable[0].startTime),
+                                                endTime: dateFormat(itemsArray[x].timesAvailable[0].endTime),
+                                                availability: availabilityObj[Object.keys(availabilityObj)[0]],
+                                                price: itemsArray[x].timesAvailable[0].price.All,
+                                                activityId: itemsArray[x].timesAvailable[0].activityId
+                                            }
+
+                                            //PUSH THE PRODUCT OBJECT TO THE NEW PRODUCT ARRAY
+                                            newStartTimeArray.push(startTimeObject);
+                                        }
+                                    }
+
+                                    //SORT THE START TIME ARRAY BEFORE RETURNING IT
+                                    newStartTimeArray.sort(function(a, b) {
+                                        return a.day - b.day;
+                                    });
+
+                                    //RETURN THE PRODUCT ARRAY TO THE CALLING FUNCTION
+                                    return(newStartTimeArray);
+                                }
+                            </code>
+                        </pre>
                     </div>
+                    <div class="codeSection" id="cartCode">
+                        <pre>
+                          <code>
+                            function createCart (activityId, guests) {
+                            
+                                //CREATE THE NEW CART USING THE TOKEN CREATED AT THE BEGINNING
+                                const newCart = new XMLHttpRequest();
+                                newCart.open("POST", "https://app.resmarksystems.com/public/api/cart",false);
+                                newCart.setRequestHeader('Content-type','application/json; charset=utf-8');
+                                newCart.setRequestHeader('Authorization',`Bearer ${token}`); 
+                                newCart.send();
+
+                                //CREATING VARIABLE FOR THE CART ID OBTAINED FROM THE RESPONSE TEXT OF OUR 'CREATE CART' API CALL
+                                cartId = JSON.parse(newCart.responseText).data.id;
+
+                                //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
+                          </code>
+                        </pre>
+                </div>
                 </div>
             </div>
 
@@ -154,7 +236,7 @@
 
                 <div class="container">
                     <button class="button getCodeButton" id="getCustomerCode">
-                        Show API Call
+                        Show Add Customer to Cart API Call
                         <i id="customerArrow" class="arrow down"></i>
                     </button>
                     <div class="codeSection" id="customerCode">

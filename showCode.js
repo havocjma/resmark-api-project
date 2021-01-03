@@ -36,20 +36,57 @@ document.getElementById("getProductsCode").addEventListener("click", function() 
 
 
 //===============================  SHOW DATE AND PARTICIPANT CODE  ===============================\\
-document.getElementById("getDateAndPartCode").addEventListener("click", function() {
+document.getElementById("getDatesCode").addEventListener("click", function() {
 
     //TOGGLE THE VISIBILITY OF THE DIV WITH AN ANIMATION DEPENDING ON THE CURRENT STATE
-    let code = document.getElementById("dateAndPartCode");
-    let arrow = document.getElementById("dateAndPartArrow");
+    let dateCode = document.getElementById("datesCode");
+    let dateArrow = document.getElementById("datesArrow");
+    let cartCode = document.getElementById("cartCode");
+    let cartArrow = document.getElementById("cartArrow");
+    
+    //TEAR DOWN THE CREATE CART ELEMENTS IF IT IS ON
+    if (cartCode.style.display == "block") {
+        cartCode.style.display = "none";
+        cartArrow.classList.remove("up");
+        cartArrow.classList.add("down");
+    }
 
-    if (code.style.display == "block") {
-        code.style.display = "none";
-        arrow.classList.remove("up");
-        arrow.classList.add("down");
+    //UPDATE THE PRODUCT API ELEMENTS
+    if (dateCode.style.display == "block") {
+        dateCode.style.display = "none";
+        dateArrow.classList.remove("up");
+        dateArrow.classList.add("down");
     } else {
-        code.style.display = "block";
-        arrow.classList.remove("down");
-        arrow.classList.add("up");
+        dateCode.style.display = "block";
+        dateArrow.classList.remove("down");
+        dateArrow.classList.add("up");
+    }
+});
+
+document.getElementById("getCreateCartCode").addEventListener("click", function() {
+
+    //TOGGLE THE VISIBILITY OF THE DIV WITH AN ANIMATION DEPENDING ON THE CURRENT STATE
+    let dateCode = document.getElementById("datesCode");
+    let dateArrow = document.getElementById("datesArrow");
+    let cartCode = document.getElementById("cartCode");
+    let cartArrow = document.getElementById("cartArrow");
+
+    //TEAR DOWN THE DATE ELEMENTS IF IT IS ON
+    if (dateCode.style.display == "block") {
+        dateCode.style.display = "none";
+        dateArrow.classList.remove("up");
+        dateArrow.classList.add("down");
+    }
+
+    //UPDATE THE CREATE CART API ELEMENTS
+    if (cartCode.style.display == "block") {
+        cartCode.style.display = "none";
+        cartArrow.classList.remove("up");
+        cartArrow.classList.add("down");
+    } else {
+        cartCode.style.display = "block";
+        cartArrow.classList.remove("down");
+        cartArrow.classList.add("up");
     }
 });
 
