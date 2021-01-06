@@ -125,7 +125,7 @@
 
             <!-- Show selected Product and input fields for the date and participants. when entered Show Times Available for date entered when time selected go to next section-->
             <div class="section" id="selectDateSection">
-                <h3 class="sectionHeader">Select a Date and Add Participants</h3>
+                <h3 class="sectionHeader">Add Participants, Search For a Start Time and Select a Start Date</h3>
                 <p class="description">This is a description</p>
 
                 <div class="container contentBox" id="selectedProduct"></div>
@@ -222,7 +222,22 @@
                                 //CREATING VARIABLE FOR THE CART ID OBTAINED FROM THE RESPONSE TEXT OF OUR 'CREATE CART' API CALL
                                 cartId = JSON.parse(newCart.responseText).data.id;
 
+                                //CREATE THE BODY TO SEND WITH THE ADD PRODUCT ITEM API CALL
+                                const body = {
+                                    itemId: activityId,
+                                    participants: {
+                                        All: guests
+                                    },
+                                    locationId: selectedLocationId
+                                };
+                                const json = JSON.stringify(body);
+
                                 //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
+                                const addItem = new XMLHttpRequest();
+                                addItem.open("POST", `https://app.resmarksystems.com/public/api/cart/${cartId}/item`,false);
+                                addItem.setRequestHeader('Content-type','application/json; charset=utf-8');
+                                addItem.setRequestHeader('Authorization',`Bearer ${token}`); 
+                                addItem.send(json);
                           </code>
                         </pre>
                 </div>
@@ -231,29 +246,86 @@
 
             <!-- Collect the customers information -->
             <div class="section">
-                <h3 class="sectionHeader">Collect the Customers Information</h3>
+                <h3 class="sectionHeader">Review Order and Collect the Customers Information</h3>
                 <p class="description">This is a description</p>
 
+                <div class="container contentBox" id="reviewCart">
+                    <div id="cartContainer"></div>
+                    <div id="collectCustomerData"></div>
+                </div>
+
                 <div class="container">
-                    <button class="button getCodeButton" id="getCustomerCode">
+                    <button class="button doubleButton" id="getCustomerCode">
                         Show Add Customer to Cart API Call
                         <i id="customerArrow" class="arrow down"></i>
+                    </button>
+                    <button class="button doubleButton" id="getCreateOrderCode">
+                        Show Create Order API Call
+                        <i id="createOrderArrow" class="arrow down"></i>
                     </button>
                     <div class="codeSection" id="customerCode">
                             <pre>
                               <code>
-                                
+                                //PREPROCESS PHONE NUMBER
+                                let processedPhone = phone.replace(/-/g,'');
+                            
+                                //PREPROCESS GENDER
+                                if (gender == 'Male') {
+                                    gender = 'MALE'
+                                } else if (gender == 'Female') {
+                                    gender = 'FEMALE'
+                                } 
+                            
+                                //CREATE THE BODY TO SEND WITH THE ADD PRODUCT ITEM API CALL
+                                const body = {
+                                    'email': email,
+                                    'firstName': fname,
+                                    'lastName': lname,
+                                    'phone': processedPhone,
+                                    'birthDate': dob,
+                                    'gender': gender,
+                                    'streetAddress': address,
+                                    'city': city,
+                                    'state': state
+                                };
+                                const json = JSON.stringify(body);
+                            
+                                //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
+                                const addCustomer = new XMLHttpRequest();
+                                addCustomer.open("PUT", `https://sandbox.resmarksystems.com/public/api/cart/${cartId}/customer`,false);
+                                addCustomer.setRequestHeader('Content-type','application/json; charset=utf-8');
+                                addCustomer.setRequestHeader('Authorization',`Bearer ${token}`); 
+                                addCustomer.send(json);
                               </code>
                             </pre>
+                    </div>
+                    <div class="codeSection" id="createOrderCode">
+                        <pre>
+                          <code>
+                            //CREATE THE BODY TO SEND WITH THE CREATE ORDER ITEM API CALL
+                            const json = JSON.stringify({id: cartId});
+                        
+                            //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
+                            const createOrder = new XMLHttpRequest();
+                            createOrder.open("POST", `https://sandbox.resmarksystems.com/public/api/order`,false);
+                            createOrder.setRequestHeader('Content-type','application/json; charset=utf-8');
+                            createOrder.setRequestHeader('Authorization',`Bearer ${token}`); 
+                            createOrder.send(json);
+                          </code>
+                        </pre>
                     </div>
                 </div>
             </div>
 
             <!-- Create the order -->
             <div class="section">
-                <h3 class="sectionHeader">Create and then Display the Order</h3>
+                <h3 class="sectionHeader">Display the New Order</h3>
                 <p class="description">This is a description</p>
                 
+                <div class="container contentBox" id="displayOrder">
+                    <div id="orderContainer"></div>
+                </div>
+
                 <div class="container">
                     <button class="button getCodeButton" id="getOrderCode">
                         Show API Call

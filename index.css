@@ -76,6 +76,9 @@ body {
 #customerCode { 
     display: none;
 }
+#createOrderCode {
+    display: none;
+}
 #orderCode { 
     display: none;
 }
@@ -215,8 +218,6 @@ input:-webkit-autofill:active  {
 }
 .productImg {
     margin: 0 auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
     padding: 5px;
     width: 80%;
     height: 150px;
@@ -233,12 +234,24 @@ input:-webkit-autofill:active  {
     min-height: 200px;
     padding-bottom: 20px;
 }
-.timeAndPartContainer {
+#timeAndPartContainer {
     border: 1px solid rgb(150, 150, 150);
     border-radius: 5px;
     background-color: white;
     margin: 20px 0 0 2.25%;
-    width:  30.75%;
+    width:  27%;
+    height: 330px;
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    vertical-align: middle;
+}
+#availTimesContainer {
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 5px;
+    background-color: white;
+    margin: 20px 0 0 2.25%;
+    width:  34%;
     height: 330px;
     display: inline-block;
     text-align: center;
@@ -261,7 +274,7 @@ input:-webkit-autofill:active  {
     border-radius: 15px;
     margin: 0 auto;
     margin-bottom: 15px;
-    width: 90%;
+    width: 100%;
 }
 .startDateRow:hover {
     cursor: pointer;
@@ -269,12 +282,14 @@ input:-webkit-autofill:active  {
 }
 .date {
     display: inline-block;
-    width: 31%;
-    font-size: 16px;
-    padding-top" 8px
+    font-family: sans-serif;
+    width: 32%;
+    font-size: 14px;
+    padding-top: 8px;
+    font-weight: bold;
 }
 .pricePerGuest {
-    width: 30%;
+    width: 28%;
     background-color:  rgba(33, 241, 50, 0.774);
     font-weight: bold;
     border-left: 1px solid rgb(150, 150, 150);
@@ -283,4 +298,77 @@ input:-webkit-autofill:active  {
     padding-top: 7px;
     height: 28px;
     float: right;
+    font-family: sans-serif;
+}
+
+/* ============ REVIEW CART ============== */
+#reviewCart {
+    min-height: 200px;
+    margin-top: 20px;
+}
+
+
+/* ============ COLLECT CUSTOMER DATA ============== */
+#cartContainer {
+    padding-bottom: 20px;
+    width: 60%;
+    margin: 0 auto;
+    /*border-bottom: 1px solid rgb(150, 150, 150);*/
+}
+#cartImg {
+    display: inline-block;
+    margin-top: 50px;
+    height: 250px;
+    max-width: 50%
+}
+#cartInfo {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 30px;
+    margin-top: 25px;
+    max-width: 45%;
+}
+#productName {
+    font-family: sans-serif;
+    text-decoration: underline;
+    font-size: 26px;
+}
+#participants {
+    margin-top: -15px;
+    font-family: sans-serif;
+    font-size: 15px;
+}
+.fromto {
+    font-size: 20px; 
+    font-family: sans-serif;
+
+}
+#total {
+    font-size: 20px; 
+    font-weight: bold;
+    font-family: sans-serif;
+    margin-top: 70px;
+}
+#collectCustomerData {
+    width: 60%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+/* #customerDetails { 
+
+} */
+.input { 
+    width: 95%;
+    height: 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 2px;
+}
+
+/* ============ DISPLAY ORDER ============== */
+#displayOrder {
+    min-height: 200px;
 }

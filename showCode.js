@@ -90,21 +90,57 @@ document.getElementById("getCreateCartCode").addEventListener("click", function(
     }
 });
 
-//===============================  SHOW CUSTOMER CODE  ===============================\\
+//===============================  SHOW CUSTOMER AND CREATE ORDER CODE  ===============================\\
 document.getElementById("getCustomerCode").addEventListener("click", function() {
 
     //TOGGLE THE VISIBILITY OF THE DIV WITH AN ANIMATION DEPENDING ON THE CURRENT STATE
-    let code = document.getElementById("customerCode");
-    let arrow = document.getElementById("customerArrow");
+    let customerCode = document.getElementById("customerCode");
+    let customerArrow = document.getElementById("customerArrow");
+    let createOrderCode = document.getElementById("createOrderCode");
+    let createOrderArrow = document.getElementById("createOrderArrow");
 
-    if (code.style.display == "block") {
-        code.style.display = "none";
-        arrow.classList.remove("up");
-        arrow.classList.add("down");
+    //TEAR DOWN THE DATE ELEMENTS FOR 'CREATE ORDER' IF THEY ARE ON
+    if (createOrderCode.style.display == "block") {
+        createOrderCode.style.display = "none";
+        createOrderArrow.classList.remove("up");
+        createOrderArrow.classList.add("down");
+    }
+
+    if (customerCode.style.display == "block") {
+        customerCode.style.display = "none";
+        customerArrow.classList.remove("up");
+        customerArrow.classList.add("down");
     } else {
-        code.style.display = "block";
-        arrow.classList.remove("down");
-        arrow.classList.add("up");
+        customerCode.style.display = "block";
+        customerArrow.classList.remove("down");
+        customerArrow.classList.add("up");
+    }
+});
+
+document.getElementById("getCreateOrderCode").addEventListener("click", function() {
+
+    //TOGGLE THE VISIBILITY OF THE DIV WITH AN ANIMATION DEPENDING ON THE CURRENT STATE
+    let customerCode = document.getElementById("customerCode");
+    let customerArrow = document.getElementById("customerArrow");
+    let createOrderCode = document.getElementById("createOrderCode");
+    let createOrderArrow = document.getElementById("createOrderArrow");
+
+    //TEAR DOWN THE DATE ELEMENTS FOR 'CUSTOMER' IF THEY ARE ON
+    if (customerCode.style.display == "block") {
+        customerCode.style.display = "none";
+        customerArrow.classList.remove("up");
+        customerArrow.classList.add("down");
+    }
+
+    //UPDATE THE CREATE CART API ELEMENTS
+    if (createOrderCode.style.display == "block") {
+        createOrderCode.style.display = "none";
+        createOrderArrow.classList.remove("up");
+        createOrderArrow.classList.add("down");
+    } else {
+        createOrderCode.style.display = "block";
+        createOrderArrow.classList.remove("down");
+        createOrderArrow.classList.add("up");
     }
 });
 

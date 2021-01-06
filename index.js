@@ -12,7 +12,7 @@ function getToken(username, key) {
     
     //MAKING THE REQUEST, SETTING THE HEADER AND SENDING THE BODY OF THE REQUEST
     const jwtToken = new XMLHttpRequest();
-    jwtToken.open("POST", "https://app.resmarksystems.com/public/api/authenticate",false);
+    jwtToken.open("POST", "https://sandbox.resmarksystems.com/public/api/authenticate",false);
     jwtToken.setRequestHeader('Content-type','application/json; charset=utf-8');
     jwtToken.send(json);
     
@@ -38,7 +38,7 @@ function getProducts(token) {
     
     //MAKING THE REQUEST, SETTING THE HEADERS AND SENDING THE BODY OF THE REQUEST
     const products = new XMLHttpRequest();
-    products.open("GET", "https://app.resmarksystems.com/public/api/product",false);
+    products.open("GET", "https://sandbox.resmarksystems.com/public/api/product",false);
     products.setRequestHeader('Content-type','application/json; charset=utf-8');
 
     //USES THE TOKEN OBTAINED ABOVE FOR ACCESS
@@ -146,20 +146,20 @@ function displaySelectedProduct(selectedName, selectedImg, selectedOverview) {
             <img class="productImg" src="${selectedImg}">
             <p class="overview">${selectedOverview}</p>
     </div>
-    <div class="timeAndPartContainer">
+    <div id="timeAndPartContainer">
         <p class="headerText">Please tell us a little about your trip</p>
         <form id="timeAndPartForm" name="timeAndPartForm" onsubmit="displayAvailableTimes(fromDate.value, toDate.value, guests.value); return false">
+        <label for="key">Number of guests: </label>
+            <input type="number" id="guests" name="guests" min="1" max="10" required><br><br>    
             <label for="fromDate">From Date: </label>
             <input type="date" id="fromDate" name="fromDate" min="2022-05-01" max="2022-05-31" required><br><br>
             <label for="toDate">To Date: </label>
             <input type="date" id="toDate" name="toDate"  min="2022-05-01" max="2022-05-31" required><br><br>
-            <label for="key">Number of guests: </label>
-            <input type="number" id="guests" name="guests" min="1" max="10" required><br><br>
             <input type="submit" value="Get Availability" class="button" id="getAvailability">
         </form>
     </div>
-    <div class="timeAndPartContainer">
-        <p class"headerText">Please select an available time below</p>
+    <div id="availTimesContainer">
+        <p class="headerText">Please select an available time below</p>
         <div id="availableStartDates"></div>
     </div>
     `
@@ -179,7 +179,7 @@ function displayAvailableTimes (from, to, guests) {
         
         //CREATE AND UPDATE THE HTML VARIABLE FOR EACH PRODUCT IN THE ARRAY     <a class="product" onclick="selectProduct('${limitedProductArray[x].name}'); return false;">
         html += `
-        <a onclick="createCart('${startTimesArray[x].activityId}','${guests}'); return false;">
+        <a onclick="createCart('${startTimesArray[x].activityId}','${guests}','${startTimesArray[x].startTime}','${startTimesArray[x].endTime}'); return false;">
             <div class="startDateRow"> 
                 <div class="date">${startTimesArray[x].startTime}</div>
                     to
@@ -203,7 +203,7 @@ function getAvailalbility (from, to) {
 
     //MAKING THE REQUEST, SETTING THE HEADERS AND SENDING THE BODY OF THE REQUEST
     const productItems = new XMLHttpRequest();
-    productItems.open("GET", `https://app.resmarksystems.com/public/api/product/${selectedProductNumber}/item?from=${apiMonth}&to=${apiMonth}`,false);
+    productItems.open("GET", `https://sandbox.resmarksystems.com/public/api/product/${selectedProductNumber}/item?from=${apiMonth}&to=${apiMonth}`,false);
     productItems.setRequestHeader('Content-type','application/json; charset=utf-8');
 
     //USES THE TOKEN OBTAINED ABOVE FOR ACCESS
@@ -293,7 +293,7 @@ function dateFormat (isoDateTime) {
     let minutes = isoDateTime.substring(14,16);
 
     //COMPLETED DATE TRANSFORMATION
-    let transDate = `<b>${monthDay}</b> ${hours}:${minutes} ${ampm}`;
+    let transDate = `${monthDay} ${hours}:${minutes} ${ampm}`;
 
     //RETURNING THE REFORMATTED DATE TO THE CALLING FUNCTION
     return transDate;
@@ -303,22 +303,17 @@ let cartId;
 let totalPrice;
 
 //CREATE A NEW CART AND ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO IT
-function createCart (activityId, guests) {
-
-    console.log(activityId);
-    console.log(selectedLocationId);
-    console.log(guests);
+function createCart (activityId, guests, from, to) {
 
     //CREATE THE NEW CART
     const newCart = new XMLHttpRequest();
-    newCart.open("POST", "https://app.resmarksystems.com/public/api/cart",false);
+    newCart.open("POST", "https://sandbox.resmarksystems.com/public/api/cart",false);
     newCart.setRequestHeader('Content-type','application/json; charset=utf-8');
     newCart.setRequestHeader('Authorization',`Bearer ${token}`); 
     newCart.send();
 
     //CREATING VARIABLE FOR THE CART ID OBTAINED FROM THE RESPONSE TEXT OF OUR 'CREATE CART' API CALL
     cartId = JSON.parse(newCart.responseText).data.id;
-    console.log(cartId);
 
     //CREATE THE BODY TO SEND WITH THE ADD PRODUCT ITEM API CALL
     const body = {
@@ -332,35 +327,144 @@ function createCart (activityId, guests) {
 
     //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
     const addItem = new XMLHttpRequest();
-    addItem.open("POST", `https://app.resmarksystems.com/public/api/cart/${cartId}/item`,false);
+    addItem.open("POST", `https://sandbox.resmarksystems.com/public/api/cart/${cartId}/item`,false);
     addItem.setRequestHeader('Content-type','application/json; charset=utf-8');
     addItem.setRequestHeader('Authorization',`Bearer ${token}`); 
     addItem.send(json);
 
-    console.log(JSON.parse(addItem.responseText).data);
-
     //SETTING THE TOTAL PRICE VARIABLE TO USE LATER
-    totalPrice = JSON.parse(addItem.responseText).data.items[0].total
+    totalPrice = JSON.parse(addItem.responseText).data.items[0].total;
 
     //DISPLAY THE 'COLLECT CUSTOMER INFORMATION' FORM IN THE NEXT SECTION
-    initCustomerForm();
+    initCustomerForm(guests, from, to);
 }
 
 //INITIALIZE THE CUSTOMER FORM
-function initCustomerForm () {
+function initCustomerForm (guests, from, to) {
 
     //SHOW SUMMARY OF PRODUCT, DATE, TIME, PARTICIPANTS AND TOTAL COST (INCLUDING TAX)
+    let html = `
+        <img id="cartImg" src="${selectedImg}">
+        <div id="cartInfo">
+            <h3 id="productName">${selectedName}</h3>
+            <p id="participants">Total Guests: ${guests}</p>
+            <p class="fromto">Begins: ${from}</p>
+            <p class="fromto">Ends: ${to}</p>
+            <p id="total">Total: $${totalPrice}</p>
+        </div>
+    `
+    //POPULATE THE CART CONTAINER WITH THE CART SUMMARY
+    document.getElementById("cartContainer").innerHTML = html;
 
+    //Variable to hold todays date for max value in DOB
+    let today = new Date().toISOString().slice(0,10);
 
     //SHOW THE FORM TO COLLECT CUSTOMER DATA
+    let customerFormHtml = `
+        <form id="customerDetails" name="customerForm" onsubmit="addCustomer(email.value, fname.value, lname.value, gender.value, phone.value, dob.value, address.value, city.value, state.value); return false">
 
+            <label for="email">Email:</label><br>
+            <input type="text" class="input" id="email" name="email" maxlength="50" required><br><br>
+
+            <label for="fname">First Name:</label><br>
+            <input type="text" class="input" id="fname" name="fname" maxlength="20" required><br><br>
+
+            <label for="lname">Last Name:</label><br>
+            <input type="text" class="input" id="lname" name="lname" maxlength="20" required><br><br>
+
+            <label for="gender">Gender:</label><br>
+            <select class="input" id="gender" name="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select><br><br>
+
+            <label for="phone">Phone:</label><br>
+            <input type="tel" class="input" id="phone" name="phone" placeholder="123-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" minlength="12" maxlength="12"><br><br>
+
+            <label for="dob">Date of Birth:</label><br>
+            <input type="date" class="input" id="dob" name="dob" max="${today}"><br><br>
+
+            <label for="address">Address:</label><br>
+            <input type="text" class="input" id="address" name="address" maxlength="30"><br><br>
+
+            <label for="city">City:</label><br>
+            <input type="text" class="input" id="city" name="city" maxlength="30"><br><br>
+
+            <label for="state">State:</label><br>
+            <input type="text" class="input" id="state" name="state" maxlength="2" placeholder="UT"><br><br>
+
+            <input type="submit" value="Create My Order" class="button getCodeButton" id="submitCustomer">
+        </form>
+    `
+    //POPULATE THE CUSTOMER DATA CONTAINER WITH THE CUSTOMER DATA FORM
+    document.getElementById("collectCustomerData").innerHTML = customerFormHtml;
+
+    //SCROLL THE USER TO THE NEXT SECTION
+    document.getElementById('reviewCart').scrollIntoView({behavior: "smooth"});
 }
 
-//ADD THE CUSTOMER DATA TO THE CART
+//ADD THE COLLECTED CUSTOMER DATA TO THE CART
+function addCustomer(email, fname, lname, gender, phone, dob, address, city, state) {
 
+   //PREPROCESS PHONE NUMBER
+    let processedPhone = phone.replace(/-/g,'');
+
+    //PREPROCESS GENDER
+    if (gender == 'Male') {
+        gender = 'MALE'
+    } else if (gender == 'Female') {
+        gender = 'FEMALE'
+    } 
+
+    //CREATE THE BODY TO SEND WITH THE ADD PRODUCT ITEM API CALL
+    const body = {
+        'email': email,
+        'firstName': fname,
+        'lastName': lname,
+        'phone': processedPhone,
+        'birthDate': dob,
+        'gender': gender,
+        'streetAddress': address,
+        'city': city,
+        'state': state
+    };
+    const json = JSON.stringify(body);
+
+    //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
+    const addCustomer = new XMLHttpRequest();
+    addCustomer.open("PUT", `https://sandbox.resmarksystems.com/public/api/cart/${cartId}/customer`,false);
+    addCustomer.setRequestHeader('Content-type','application/json; charset=utf-8');
+    addCustomer.setRequestHeader('Authorization',`Bearer ${token}`); 
+    addCustomer.send(json);
+
+    //AFTER THE CUSTOMER HAS BEEN ADDED TO THE CART THEN CREATE THE ORDER
+    createOrder();
+}
 
 //CREATE THE NEW ORDER
+function createOrder() {
 
+    //CREATE THE BODY TO SEND WITH THE CREATE ORDER ITEM API CALL
+    const json = JSON.stringify({id: cartId});
+
+    //ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO THE CART
+    const createOrder = new XMLHttpRequest();
+    createOrder.open("POST", `https://sandbox.resmarksystems.com/public/api/order`,false);
+    createOrder.setRequestHeader('Content-type','application/json; charset=utf-8');
+    createOrder.setRequestHeader('Authorization',`Bearer ${token}`); 
+    createOrder.send(json);
+
+    //PARSING THE RESPONSE TEXT TO TURN IT INTO JSON FROM A STRING
+    const dataCheck = JSON.parse(createOrder.responseText).data;
+    console.log(dataCheck);
+
+    //AFTER THE ORDER HAS BEEN CREATED DISPLAY IT
+    //displayOrder();
+}
 
 //DISPLAY THE NEW ORDER IN THE FINAL SECTION
- 
+function displayOrder() {
+
+    //SCROLL THE USER TO THE NEXT SECTION
+    document.getElementById('displayOrder').scrollIntoView({behavior: "smooth"});
+} 
