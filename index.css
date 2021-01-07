@@ -187,7 +187,9 @@ input:-webkit-autofill:active  {
 /* ============ SHOW PRODUCTS ============== */
 #productsContainer {
     min-height: 200px;
+    max-height: 800px;
     padding-bottom: 20px;
+    overflow: auto;
 }
 .product {
     border: 1px solid rgb(150, 150, 150);
@@ -228,12 +230,15 @@ input:-webkit-autofill:active  {
     margin-top: 5px;
     width: 80%;
     font-family: sans-serif;
+    max-height: 90px;
+    overflow: hidden;
 }
 
 /* ============ SHOW PRODUCTS ============== */
 #selectedProduct {
     min-height: 200px;
     padding-bottom: 20px;
+    margin-top: 20px;
 }
 #timeAndPartContainer {
     border: 1px solid rgb(150, 150, 150);
@@ -372,6 +377,7 @@ input:-webkit-autofill:active  {
 /* ============ DISPLAY ORDER ============== */
 #displayOrder {
     min-height: 200px;
+    margin-top: 20px;
 }
 #orderMeta {
     font-family: sans-serif;

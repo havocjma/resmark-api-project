@@ -84,7 +84,7 @@
                      After obtaining your authorization token you can then start to interact with the other API endpoints. In the following example, we will
                      pass the JWT Token obtained above to get a list of all the products in our business, along with some select meta data about each of those products. 
                      Once we have that information we can then format and display those products to the customer. Click 'Show My Products' below to invoke 
-                     the Product endpoint of the API and then select a product from the list.
+                     the Product endpoint of the API and then select a product from the list to move to the next section.
                 </p>
                 <button id="showProducts" class="button getCodeButton">Show My Products</button>
                 <div class="container contentBox" id="productsContainer"></div>
@@ -126,7 +126,10 @@
             <!-- Show selected Product and input fields for the date and participants. when entered Show Times Available for date entered when time selected go to next section-->
             <div class="section" id="selectDateSection">
                 <h3 class="sectionHeader">Add Participants, Search For a Start Time and Select a Start Date</h3>
-                <p class="description">This is a description</p>
+                <p class="description">Once the user has selected a product, they will also need to select a start date and time which we can display using the Product Items 
+                    Endpoint. Please enter the date range (Example business limited to May 2021) and number of participants below and then click 'Get Availability' to use the Product Items Endpoint to 
+                    retrieve the available times for the selected product. The user can then select a start date and time for their order, after which we can create a cart with the specific 
+                    product launch and number of participants attached</p>
 
                 <div class="container contentBox" id="selectedProduct"></div>
 
@@ -247,7 +250,10 @@
             <!-- Collect the customers information -->
             <div class="section">
                 <h3 class="sectionHeader">Review Order and Collect the Customers Information</h3>
-                <p class="description">This is a description</p>
+                <p class="description">Once the cart has been created and the selected product and participants have been added, we can then add some customer information to the cart and create the order. 
+                    The form below will collect that data which can then be added to the cart using the Update Customer Endpoint. Certain fields like gender, phone, date of birth 
+                    and state will need to be preprocessed so the correct format is used when interacting with the API. Please fill out the form below and click 'Create Order' to add the customer data and 
+                    create the users order</p>
 
                 <div class="container contentBox" id="reviewCart">
                     <div id="cartContainer"></div>
@@ -320,7 +326,10 @@
             <!-- Create the order -->
             <div class="section">
                 <h3 class="sectionHeader">Display the New Order</h3>
-                <p class="description">This is a description</p>
+                <p class="description">Once the order has been created you can ustalize either the response text from the API call or the Get Orders Endpoint to retrieve all the order data. This object will have 
+                    most of the order meta data that you will need to show the user after a successful order is completed. The full description can be found here:  
+                    <a href="https://resmark.docs.apiary.io/#reference/order/all-orders/get-orders">Resmark API</a>
+                </p>
                 
                 <div class="container contentBox" id="displayOrder"></div>
 

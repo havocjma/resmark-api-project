@@ -481,9 +481,6 @@ function createOrder() {
 
     //AFTER THE ORDER HAS BEEN CREATED DISPLAY IT
     displayOrder(orderData);
-    console.log(orderData.createdDate);
-    console.log(orderData.items[0].date.startTime);
-    console.log(orderData.items[0].date.endTime);
 }
 
 //DISPLAY THE NEW ORDER IN THE FINAL SECTION
@@ -530,10 +527,3 @@ function displayOrder(orderData) {
     document.getElementById("displayOrder").innerHTML = html;
 
 } 
-
-//FUNCTION TO PROCESS DATES
-function processDate (date) {
-    theYear = date.substring(0,5);
-    theMonth = months[parseInt(date.substring(5,7))-1];
-    theDay = date.substring(8,10);
-}
