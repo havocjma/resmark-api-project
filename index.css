@@ -227,6 +227,7 @@ input:-webkit-autofill:active  {
     text-align: left;
     margin-top: 5px;
     width: 80%;
+    font-family: sans-serif;
 }
 
 /* ============ SHOW PRODUCTS ============== */
@@ -371,4 +372,46 @@ input:-webkit-autofill:active  {
 /* ============ DISPLAY ORDER ============== */
 #displayOrder {
     min-height: 200px;
+}
+#orderMeta {
+    font-family: sans-serif;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.orderHeader {
+    margin-left: 2.25%;
+    font-size: 18px;
+    font-family: sans-serif;
+}
+#orderContainer {
+    padding: 20px;
+}
+.orderContainers {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 5px;
+    margin: 20px 0 0 2.25%;
+    height: 330px;
+    padding: 10px 20px;
+    vertical-align: middle;
+    width: 27% !important;
+}
+#orderSuccess {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color:rgb(17 177 30 / 93%);
+    font-family: sans-serif;
+    margin: 16px;
+    margin-bottom: 0px;
+}
+.orderLineItem {
+    font-family: sans-serif;
+    font-size: 18px;
+    margin-top: 30px;
+}
+
+.orderHeaderTextSize {
+    font-size: 24px !important;
 }

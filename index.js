@@ -177,7 +177,7 @@ function displayAvailableTimes (from, to, guests) {
     //CREATE THE HTML TO BE ADDED TO THE PAGE OUT OF THE PRODUCT ARRAY
     for (let x=0; x<startTimesArray.length; x++) {
         
-        //CREATE AND UPDATE THE HTML VARIABLE FOR EACH PRODUCT IN THE ARRAY     <a class="product" onclick="selectProduct('${limitedProductArray[x].name}'); return false;">
+        //CREATE AND UPDATE THE HTML VARIABLE FOR EACH PRODUCT IN THE ARRAY    
         html += `
         <a onclick="createCart('${startTimesArray[x].activityId}','${guests}','${startTimesArray[x].startTime}','${startTimesArray[x].endTime}'); return false;">
             <div class="startDateRow"> 
@@ -262,11 +262,11 @@ function getAvailalbility (from, to) {
     return(newStartTimeArray);
 }
 
+//ARRAY THAT HOLDS THE MONTHS OF THE YEAR
+let months = ['January','February','March','April','May','June','July','August','September','October','November','December',]
+
 //FUNCTION TO REFORMAT THE DATE AND TIME RETURNED BY THE API
 function dateFormat (isoDateTime) {
-
-    //ARRAY THAT HOLDS THE MONTHS OF THE YEAR
-    let months = ['January','February','March','April','May','June','July','August','September','October','November','December',]
 
     //TAKE THE MONTH AND DAY OUT OF THE ISO DATE AND TRANSFORM THE MONTH TO A STRING
     let monthDay =  (months[parseInt(isoDateTime.substring(5,7)) - 1]) + ' ' + isoDateTime.substring(8,10);
@@ -301,9 +301,13 @@ function dateFormat (isoDateTime) {
 
 let cartId;
 let totalPrice;
+let participants;
 
 //CREATE A NEW CART AND ADD THE SELECTED ACTIVITY AND PARTICIPANTS TO IT
 function createCart (activityId, guests, from, to) {
+
+    //SETTING GLOBAL VARIABLES
+    participants = guests;
 
     //CREATE THE NEW CART
     const newCart = new XMLHttpRequest();
@@ -403,6 +407,14 @@ function initCustomerForm (guests, from, to) {
     document.getElementById('reviewCart').scrollIntoView({behavior: "smooth"});
 }
 
+let customerFirstName;
+let customerLastName;
+let customerEmail;
+let customerPhone;
+let customerAddress;
+let customerCity;
+let customerState
+
 //ADD THE COLLECTED CUSTOMER DATA TO THE CART
 function addCustomer(email, fname, lname, gender, phone, dob, address, city, state) {
 
@@ -415,6 +427,15 @@ function addCustomer(email, fname, lname, gender, phone, dob, address, city, sta
     } else if (gender == 'Female') {
         gender = 'FEMALE'
     } 
+
+    //SET GLOBAL VARIABLES
+    customerFirstName = fname;
+    customerLastName = lname;
+    customerEmail = email;
+    customerAddress = address;
+    customerCity = city;
+    customerState = state;
+    customerPhone = phone;
 
     //CREATE THE BODY TO SEND WITH THE ADD PRODUCT ITEM API CALL
     const body = {
@@ -438,7 +459,7 @@ function addCustomer(email, fname, lname, gender, phone, dob, address, city, sta
     addCustomer.send(json);
 
     //AFTER THE CUSTOMER HAS BEEN ADDED TO THE CART THEN CREATE THE ORDER
-    createOrder();
+    createOrder(email, fname, lname);
 }
 
 //CREATE THE NEW ORDER
@@ -455,16 +476,64 @@ function createOrder() {
     createOrder.send(json);
 
     //PARSING THE RESPONSE TEXT TO TURN IT INTO JSON FROM A STRING
-    const dataCheck = JSON.parse(createOrder.responseText).data;
-    console.log(dataCheck);
+    const orderData = JSON.parse(createOrder.responseText).data;
+    console.log(orderData);
 
     //AFTER THE ORDER HAS BEEN CREATED DISPLAY IT
-    //displayOrder();
+    displayOrder(orderData);
+    console.log(orderData.createdDate);
+    console.log(orderData.items[0].date.startTime);
+    console.log(orderData.items[0].date.endTime);
 }
 
 //DISPLAY THE NEW ORDER IN THE FINAL SECTION
-function displayOrder() {
+function displayOrder(orderData) {
 
-    //SCROLL THE USER TO THE NEXT SECTION
-    document.getElementById('displayOrder').scrollIntoView({behavior: "smooth"});
+    //PREPROCESS THE DATES
+    let createdDate = dateFormat(orderData.createdDate);
+    let startDate = dateFormat(orderData.items[0].date.startTime);
+    let endDate = dateFormat(orderData.items[0].date.endTime);
+
+    //DEFINE AND POPULATE THE HTML THAT WILL BE ADDED TO THE PAGE
+    let html = `
+        <p id="orderSuccess">YOUR ORDER HAS BEEN PROCESSED!</p>
+        <div id="orderContainer">
+            <div id="orderMeta">
+                <span class="orderHeader"><b>Confirmation Number:</b> ${orderData.confirmation}</span>
+                <span class="orderHeader"><b>Created By:</b> ${orderData.createdBy}</span> 
+                <span class="orderHeader"><b>Email:</b> ${orderData.createdByEmail}</span>
+                <span class="orderHeader"><b>Created Date:</b> ${createdDate}</span>
+            </div>
+            <div class="product orderContainers">
+                <p class="productName orderHeaderTextSize">${selectedName}</p>
+                <img class="productImg" src="${selectedImg}">
+                <p class="overview">${selectedOverview}</p>
+            </div>
+            <div class="orderContainers">
+                <p class="productName orderHeaderTextSize">Order Details</p>
+                <p class="orderLineItem"><b>Start Date:</b> &nbsp; ${startDate}</p>
+                <p class="orderLineItem"><b>End Date:</b> &nbsp; ${endDate}</p>
+                <p class="orderLineItem"><b>Total Guests:</b> &nbsp; ${participants}</p>
+                <p class="orderLineItem"><b>Total Price:</b> &nbsp; $${totalPrice}</p>
+            </div>
+            <div class="orderContainers">
+                <p class="productName orderHeaderTextSize">Customer Details</p>
+                <p class="orderLineItem"><b>Name:</b> &nbsp; ${customerFirstName} ${customerLastName}</p>
+                <p class="orderLineItem"><b>Email:</b> &nbsp; ${customerEmail}</p>
+                <p class="orderLineItem"><b>Phone:</b> &nbsp; ${customerPhone}</p>
+                <p class="orderLineItem"><b>Address:</b> &nbsp; ${customerAddress} ${customerCity} ${customerState}</p>
+            </div>
+        </div>
+    `
+
+    //POPULATE THE ORDER CONTAINER WITH THE CART SUMMARY
+    document.getElementById("displayOrder").innerHTML = html;
+
 } 
+
+//FUNCTION TO PROCESS DATES
+function processDate (date) {
+    theYear = date.substring(0,5);
+    theMonth = months[parseInt(date.substring(5,7))-1];
+    theDay = date.substring(8,10);
+}
