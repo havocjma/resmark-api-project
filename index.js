@@ -64,7 +64,14 @@ function getProducts(token) {
             image: productArray[x].images[0].small,
             id: productArray[x].id,
             number: productArray[x].productNumber,
-            locationId: productArray[x].location[0].id
+            locationId: productArray[x].location[0].id,
+            highlights: productArray[x].highlights,
+            shortDesc: productArray[x].shortDescription,
+            ageRestrictions: productArray[x].ageRestrictions,
+            locationsArray: productArray[x].location,
+            startTime: productArray[x].dateSettings.startTime,
+            duration: productArray[x].dateSettings.duration,
+            video: productArray[x].videos[0]
         }
 
         //PUSH THE PRODUCT OBJECT TO THE NEW PRODUCT ARRAY
@@ -109,6 +116,13 @@ let selectedName;
 let selectedImg;
 let selectedOverview; 
 let selectedLocationId;
+let selectedHighlights;
+let selectedShortDesc;
+let selectedAgeRestrictions;
+let selectedLocationsArray;
+let selectedStartTime;
+let selectedDuration;
+let selectedVideo; 
 
 //FUNCTION THAT SETS THE SELECTED PRODUCT NUMBER AND DISPLAYS THE SELECTED PRODUCT IN THE NEXT SECTION
 function selectProduct(productName, locationId) {
@@ -123,12 +137,19 @@ function selectProduct(productName, locationId) {
             selectedName = limitedProductArray[x].name;
             selectedImg = limitedProductArray[x].image;
             selectedOverview = limitedProductArray[x].overview;
+            selectedHighlights = limitedProductArray[x].highlights;
+            selectedShortDesc = limitedProductArray[x].shortDesc;
+            selectedAgeRestrictions = limitedProductArray[x].ageRestrictions;
+            selectedLocationsArray = limitedProductArray[x].locationsArray;
+            selectedStartTime = limitedProductArray[x].startTime;
+            selectedDuration = limitedProductArray[x].duration;
+            selectedVideo = limitedProductArray[x].video.url;
             break;
         }
     }
 
     //THIS CALLS A FUNCTION IN THE NEXT SECTION TO DISPLAY THE SELECTED PRODUCT THERE
-    displaySelectedProduct(selectedName, selectedImg, selectedOverview, selectedProductNumber);
+    displaySelectedProduct(selectedName, selectedImg, selectedOverview, selectedHighlights, selectedShortDesc, selectedAgeRestrictions, selectedLocationsArray, selectedStartTime, selectedDuration, selectedVideo);
 
     //SCROLL THE USER TO THE NEXT SECTION
     document.getElementById('selectDateSection').scrollIntoView({behavior: "smooth"});
@@ -137,10 +158,49 @@ function selectProduct(productName, locationId) {
 //================================= SELECT TIME AND ADD PARTICIPANTS =======================================\\
 
 //DISPLAY PRODUCT AND THE DATE AND PARTICIPANT FORM IN THE NEXT SECTION
-function displaySelectedProduct(selectedName, selectedImg, selectedOverview) {
+function displaySelectedProduct(selectedName, selectedImg, selectedOverview, selectedHighlights, selectedShortDesc, selectedAgeRestrictions, selectedLocationsArray, selectedStartTime, selectedDuration, selectedVideo) {
     
+    //CODE TO CREATE THE LOCATIONS HTML OUT OF THE RESPONSE DATA
+    let locationsHTML = '';
+    for (let x=0; x<selectedLocationsArray.length; x++) {
+        locationsHTML += 
+            `<p>
+                <span class="locationName">${selectedLocationsArray[x].name}</span>
+                ${selectedLocationsArray[x].city}, 
+                ${selectedLocationsArray[x].state} - 
+                ${selectedLocationsArray[x].country}
+            </p>`
+    }
+
+    //CODE TO HANDLE NULL AGE RESTRICTIONS
+    if (selectedAgeRestrictions != null) {
+        selectedAgeRestrictions = selectedAgeRestrictions.minAge;
+    } else {
+        selectedAgeRestrictions = 'There are no age restrictions!'
+    }
+
     //DISPLAY THE PRODUCT  AND FORM IN THE NEXT SECTION
     document.getElementById("selectedProduct").innerHTML = `
+    <div id="productOverview">
+        <div id="videoContainer"><iframe width="420" height="345" src="${selectedVideo}"></iframe></div>
+        <div id="additionalInfo">
+            <p class="infoHeader">Highlights</p>
+            <p class="infoBody">${selectedHighlights}</p>
+            <p class="infoHeader">Short Description</p>
+            <p class="infoBody">${selectedShortDesc}</p>
+            <p class="infoHeader">Age Restrictions</p>
+            <p class="infoBody">${selectedAgeRestrictions}</p>
+        </div>
+        <div id="selectedProductMeta">
+            <p class="infoHeader">Start Time</p>
+            <p class="infoBody">${selectedStartTime}</p>
+            <p class="infoHeader">Duration</p>
+            <p class="infoBody">${selectedDuration}</p>
+            <p class="infoHeader">Locations</p>
+            ${locationsHTML}
+        </div>
+    </div>
+    
     <div class="product">
             <p class="productName">${selectedName}</p>
             <img class="productImg" src="${selectedImg}">

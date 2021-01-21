@@ -143,21 +143,3 @@ document.getElementById("getCreateOrderCode").addEventListener("click", function
         createOrderArrow.classList.add("up");
     }
 });
-
-//===============================  SHOW ORDER CODE  ===============================\\
-document.getElementById("getOrderCode").addEventListener("click", function() {
-
-    //TOGGLE THE VISIBILITY OF THE DIV WITH AN ANIMATION DEPENDING ON THE CURRENT STATE
-    let code = document.getElementById("orderCode");
-    let arrow = document.getElementById("orderArrow");
-
-    if (code.style.display == "block") {
-        code.style.display = "none";
-        arrow.classList.remove("up");
-        arrow.classList.add("down");
-    } else {
-        code.style.display = "block";
-        arrow.classList.remove("down");
-        arrow.classList.add("up");
-    }
-});
