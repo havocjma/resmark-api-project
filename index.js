@@ -182,7 +182,7 @@ function displaySelectedProduct(selectedName, selectedImg, selectedOverview, sel
     //DISPLAY THE PRODUCT  AND FORM IN THE NEXT SECTION
     document.getElementById("selectedProduct").innerHTML = `
     <div id="productOverview">
-        <div id="videoContainer"><iframe width="420" height="345" src="${selectedVideo}"></iframe></div>
+        <div id="videoContainer"><iframe width="100%" height="350" src="${selectedVideo}"></iframe></div>
         <div id="additionalInfo">
             <p class="infoHeader">Highlights</p>
             <p class="infoBody">${selectedHighlights}</p>

@@ -238,7 +238,52 @@ input:-webkit-autofill:active  {
     overflow: hidden;
 }
 
-/* ============ SHOW PRODUCTS ============== */
+/* ============ SHOW PRODUCT ============== */
+#productOverview {
+    background-color: white;
+    width: 92%;
+    margin: 0 auto;
+    margin-top: 20px;
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-family: sans-serif;
+}
+#videoContainer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 30%;
+    vertical-align: middle;
+    display: inline-block;
+}
+#additionalInfo{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    width: 30%;
+    height: 350px;
+    vertical-align: middle;
+    display: inline-block;
+    padding-left: 20px;
+}
+#selectedProductMeta {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    width: 30%;
+    height: 350px;
+    vertical-align: middle;
+    display: inline-block;
+    padding-left: 20px;
+}
+.locationName {
+    font-weight: bold;
+}
+.infoHeader {
+    font-weight: bold;
+    text-decoration: underline;
+}
 #selectedProduct {
     min-height: 200px;
     padding-bottom: 20px;
